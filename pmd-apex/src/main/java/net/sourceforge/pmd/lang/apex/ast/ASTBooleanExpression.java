@@ -4,17 +4,14 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.Node;
 import net.sourceforge.pmd.annotation.InternalApi;
 
-import apex.jorje.data.ast.BooleanOp;
-import apex.jorje.semantic.ast.expression.BooleanExpression;
-
-
-public class ASTBooleanExpression extends AbstractApexNode<BooleanExpression> {
+public class ASTBooleanExpression extends AbstractApexNode<Node> {
 
     @Deprecated
     @InternalApi
-    public ASTBooleanExpression(BooleanExpression booleanExpression) {
+    public ASTBooleanExpression(Node booleanExpression) {
         super(booleanExpression);
     }
 
@@ -25,8 +22,8 @@ public class ASTBooleanExpression extends AbstractApexNode<BooleanExpression> {
     }
 
 
-    public BooleanOp getOperator() {
-        return this.node.getOp();
-    }
-
+    // public BooleanOp getOperator() {
+    //     return this.node.getOp();
+    // }
+    // TODO
 }

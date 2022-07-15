@@ -4,16 +4,14 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.Node;
 import net.sourceforge.pmd.annotation.InternalApi;
 import net.sourceforge.pmd.lang.ast.RootNode;
 import net.sourceforge.pmd.lang.ast.SourceCodePositioner;
 
-import apex.jorje.semantic.ast.AstNode;
-import apex.jorje.services.Version;
-
 @Deprecated
 @InternalApi
-public abstract class ApexRootNode<T extends AstNode> extends AbstractApexNode<T> implements RootNode {
+public abstract class ApexRootNode<T extends Node> extends AbstractApexNode<T> implements RootNode {
     @Deprecated
     @InternalApi
     public ApexRootNode(T node) {
@@ -48,7 +46,9 @@ public abstract class ApexRootNode<T extends AstNode> extends AbstractApexNode<T
      * @return the apex version
      */
     public double getApexVersion() {
-        return node.getDefiningType().getCodeUnitDetails().getVersion().getExternal();
+        // return node.getDefiningType().getCodeUnitDetails().getVersion().getExternal();
+        // TODO
+        return 0;
     }
 
     @Override

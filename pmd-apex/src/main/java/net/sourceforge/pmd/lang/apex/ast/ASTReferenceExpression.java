@@ -4,23 +4,18 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.Node;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import net.sourceforge.pmd.annotation.InternalApi;
 
-import apex.jorje.data.Identifier;
-import apex.jorje.semantic.ast.expression.IdentifierContext;
-import apex.jorje.semantic.ast.expression.ReferenceExpression;
-import apex.jorje.semantic.ast.expression.ReferenceType;
-
-
-public class ASTReferenceExpression extends AbstractApexNode<ReferenceExpression> {
+public class ASTReferenceExpression extends AbstractApexNode<Node> {
 
     @Deprecated
     @InternalApi
-    public ASTReferenceExpression(ReferenceExpression referenceExpression) {
+    public ASTReferenceExpression(Node referenceExpression) {
         super(referenceExpression);
     }
 
@@ -31,40 +26,57 @@ public class ASTReferenceExpression extends AbstractApexNode<ReferenceExpression
     }
 
 
+    /*
     public IdentifierContext getContext() {
         return node.getContext();
     }
+     */
+    // TODO
 
 
+    /*
     public ReferenceType getReferenceType() {
         return node.getReferenceType();
     }
+     */
+    // TODO
 
     @Override
     public String getImage() {
+        /*
         if (node.getNames() != null && !node.getNames().isEmpty()) {
             return node.getNames().get(0).getValue();
         }
+         */
+        // TODO
         return null;
     }
 
     public List<String> getNames() {
+        /*
         List<Identifier> identifiers = node.getNames();
         if (identifiers != null) {
             return identifiers.stream().map(id -> id.getValue()).collect(Collectors.toList());
         }
+         */
+        // TODO
         return Collections.emptyList();
     }
 
     public boolean isSafeNav() {
-        return node.isSafeNav();
+        // return node.isSafeNav();
+        // TODO
+        return false;
     }
 
     public boolean isSObjectType() {
+        /*
         List<Identifier> identifiers = node.getNames();
         if (identifiers != null) {
             return identifiers.stream().anyMatch(id -> "sobjecttype".equalsIgnoreCase(id.getValue()));
         }
+         */
+        // TODO
         return false;
     }
 }

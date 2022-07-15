@@ -4,16 +4,14 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.Node;
 import net.sourceforge.pmd.annotation.InternalApi;
 
-import apex.jorje.data.ast.BinaryOp;
-import apex.jorje.semantic.ast.expression.BinaryExpression;
-
-public class ASTBinaryExpression extends AbstractApexNode<BinaryExpression> {
+public class ASTBinaryExpression extends AbstractApexNode<Node> {
 
     @Deprecated
     @InternalApi
-    public ASTBinaryExpression(BinaryExpression binaryExpression) {
+    public ASTBinaryExpression(Node binaryExpression) {
         super(binaryExpression);
     }
 
@@ -22,7 +20,8 @@ public class ASTBinaryExpression extends AbstractApexNode<BinaryExpression> {
         return visitor.visit(this, data);
     }
 
-    public BinaryOp getOperator() {
-        return node.getOp();
-    }
+    // public BinaryOp getOperator() {
+    //     return node.getOp();
+    // }
+    // TODO
 }

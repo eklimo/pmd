@@ -20,9 +20,6 @@ import net.sourceforge.pmd.lang.apex.ast.ASTWhileLoopStatement;
 import net.sourceforge.pmd.lang.apex.ast.ApexNode;
 import net.sourceforge.pmd.lang.apex.ast.ApexParserVisitorAdapter;
 
-import apex.jorje.data.ast.BooleanOp;
-import apex.jorje.data.ast.PrefixOp;
-
 /**
  * @author Gwilym Kuiper
  */
@@ -31,7 +28,8 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
         private int complexity = 0;
         private int nestingLevel = 0;
 
-        private BooleanOp currentBooleanOperation = null;
+        // private BooleanOp currentBooleanOperation = null;
+        // TODO
         private String methodName = null;
 
         public double getComplexity() {
@@ -53,6 +51,7 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
             complexity++;
         }
 
+        /*
         void booleanOperation(BooleanOp op) {
             if (currentBooleanOperation != op) {
                 if (op != null) {
@@ -62,6 +61,8 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
                 currentBooleanOperation = op;
             }
         }
+         */
+        // TODO
 
         void increaseNestingLevel() {
             nestingLevel++;
@@ -177,10 +178,13 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
     public Object visit(ASTBooleanExpression node, Object data) {
         State state = (State) data;
 
+        /*
         BooleanOp op = node.getOperator();
         if (op == BooleanOp.AND || op == BooleanOp.OR) {
             state.booleanOperation(op);
         }
+         */
+        // TODO
 
         return super.visit(node, data);
     }
@@ -189,10 +193,13 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
     public Object visit(ASTPrefixExpression node, Object data) {
         State state = (State) data;
 
+        /*
         PrefixOp op = node.getOperator();
         if (op == PrefixOp.NOT) {
             state.booleanOperation(null);
         }
+         */
+        // TODO
 
         return super.visit(node, data);
     }
@@ -204,7 +211,8 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
         for (ApexNode<?> child : node.children()) {
             // This needs to happen because the current 'run' of boolean operations is terminated
             // once we finish a statement.
-            state.booleanOperation(null);
+            // state.booleanOperation(null);
+            // TODO
 
             child.jjtAccept(this, data);
         }

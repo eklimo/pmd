@@ -6,6 +6,7 @@ package net.sourceforge.pmd.lang.apex.rule;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.summit.ast.CompilationUnit;
 import java.util.Collections;
 
 import org.junit.Test;
@@ -18,8 +19,6 @@ import net.sourceforge.pmd.lang.apex.ast.ASTUserInterface;
 import net.sourceforge.pmd.lang.apex.ast.ASTUserTrigger;
 import net.sourceforge.pmd.lang.apex.ast.ApexNode;
 import net.sourceforge.pmd.lang.apex.ast.ApexParserTestBase;
-
-import apex.jorje.semantic.ast.compilation.Compilation;
 
 public class AbstractApexRuleTest extends ApexParserTestBase {
 
@@ -44,7 +43,7 @@ public class AbstractApexRuleTest extends ApexParserTestBase {
     }
 
     private void run(String code) {
-        ApexNode<Compilation> node = parse(code);
+        ApexNode<CompilationUnit> node = parse(code);
         TopLevelRule rule = new TopLevelRule();
         RuleContext ctx = new RuleContext();
         ctx.setLanguageVersion(apex.getDefaultVersion());

@@ -4,18 +4,17 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.CompilationUnit;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import apex.jorje.semantic.ast.compilation.Compilation;
-
 public class ASTNewKeyValueObjectExpressionTest extends ApexParserTestBase {
 
     @Test
     public void testParameterName() {
-        ApexNode<Compilation> node = parse("public class Foo { \n"
+        ApexNode<CompilationUnit> node = parse("public class Foo { \n"
                 + "    public void foo(String newName, String tempID) { \n"
                 + "        if (Contact.sObjectType.getDescribe().isCreateable() && Contact.sObjectType.getDescribe().isUpdateable()) {\n"
                 + "            upsert new Contact(FirstName = 'First', LastName = 'Last', Phone = '414-414-4414');\n"

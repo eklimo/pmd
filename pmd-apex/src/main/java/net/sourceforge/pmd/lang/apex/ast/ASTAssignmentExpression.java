@@ -4,16 +4,14 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.Node;
 import net.sourceforge.pmd.annotation.InternalApi;
 
-import apex.jorje.data.ast.AssignmentOp;
-import apex.jorje.semantic.ast.expression.AssignmentExpression;
-
-public class ASTAssignmentExpression extends AbstractApexNode<AssignmentExpression> {
+public class ASTAssignmentExpression extends AbstractApexNode<Node> {
 
     @Deprecated
     @InternalApi
-    public ASTAssignmentExpression(AssignmentExpression assignmentExpression) {
+    public ASTAssignmentExpression(Node assignmentExpression) {
         super(assignmentExpression);
     }
 
@@ -22,7 +20,8 @@ public class ASTAssignmentExpression extends AbstractApexNode<AssignmentExpressi
         return visitor.visit(this, data);
     }
 
-    public AssignmentOp getOperator() {
-        return node.getOp();
-    }
+    // public AssignmentOp getOperator() {
+    //     return node.getOp();
+    // }
+    // TODO
 }

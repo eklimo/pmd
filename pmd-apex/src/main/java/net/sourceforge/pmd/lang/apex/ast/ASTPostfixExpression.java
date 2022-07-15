@@ -4,17 +4,14 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.Node;
 import net.sourceforge.pmd.annotation.InternalApi;
 
-import apex.jorje.data.ast.PostfixOp;
-import apex.jorje.semantic.ast.expression.PostfixExpression;
-
-
-public class ASTPostfixExpression extends AbstractApexNode<PostfixExpression> {
+public class ASTPostfixExpression extends AbstractApexNode<Node> {
 
     @Deprecated
     @InternalApi
-    public ASTPostfixExpression(PostfixExpression postfixExpression) {
+    public ASTPostfixExpression(Node postfixExpression) {
         super(postfixExpression);
     }
 
@@ -24,8 +21,9 @@ public class ASTPostfixExpression extends AbstractApexNode<PostfixExpression> {
         return visitor.visit(this, data);
     }
 
-
+    /*
     public PostfixOp getOperator() {
         return node.getOp();
     }
+     */
 }

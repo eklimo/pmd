@@ -4,16 +4,14 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.Node;
 import net.sourceforge.pmd.annotation.InternalApi;
 
-import apex.jorje.data.ast.PrefixOp;
-import apex.jorje.semantic.ast.expression.PrefixExpression;
-
-public class ASTPrefixExpression extends AbstractApexNode<PrefixExpression> {
+public class ASTPrefixExpression extends AbstractApexNode<Node> {
 
     @Deprecated
     @InternalApi
-    public ASTPrefixExpression(PrefixExpression prefixExpression) {
+    public ASTPrefixExpression(Node prefixExpression) {
         super(prefixExpression);
     }
 
@@ -22,8 +20,10 @@ public class ASTPrefixExpression extends AbstractApexNode<PrefixExpression> {
         return visitor.visit(this, data);
     }
 
-
+    /*
     public PrefixOp getOperator() {
         return node.getOp();
     }
+     */
+    // TODO
 }

@@ -7,6 +7,7 @@ package net.sourceforge.pmd.lang.apex.metrics;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import com.google.summit.ast.CompilationUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,14 +28,12 @@ import net.sourceforge.pmd.lang.metrics.MetricKeyUtil;
 import net.sourceforge.pmd.lang.metrics.MetricOptions;
 import net.sourceforge.pmd.lang.metrics.MetricsUtil;
 
-import apex.jorje.semantic.ast.compilation.Compilation;
-
 /**
  * @author Clément Fournier
  */
 public class ApexProjectMirrorTest extends ApexParserTestBase {
 
-    private static ApexNode<Compilation> acu;
+    private static ApexNode<CompilationUnit> acu;
     private MetricKey<ASTUserClassOrInterface<?>> classMetricKey = MetricKeyUtil.of(null, new RandomClassMetric());
     private MetricKey<ASTMethod> opMetricKey = MetricKeyUtil.of(null, new RandomOperationMetric());
 
@@ -70,7 +69,7 @@ public class ApexProjectMirrorTest extends ApexParserTestBase {
     }
 
 
-    private List<Integer> visitWith(ApexNode<Compilation> acu, final boolean force) {
+    private List<Integer> visitWith(ApexNode<CompilationUnit> acu, final boolean force) {
         final List<Integer> result = new ArrayList<>();
 
         acu.jjtAccept(new ApexParserVisitorAdapter() {

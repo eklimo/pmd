@@ -4,11 +4,11 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
-import apex.jorje.semantic.ast.compilation.InvalidDependentCompilation;
+import com.google.summit.ast.Node;
 
-public final class ASTInvalidDependentCompilation extends ApexRootNode<InvalidDependentCompilation> {
+public final class ASTInvalidDependentCompilation extends ApexRootNode<Node> {
 
-    ASTInvalidDependentCompilation(InvalidDependentCompilation userClass) {
+    ASTInvalidDependentCompilation(Node userClass) {
         super(userClass);
     }
 

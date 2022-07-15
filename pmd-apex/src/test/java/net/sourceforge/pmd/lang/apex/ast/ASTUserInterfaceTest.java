@@ -4,23 +4,22 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.CompilationUnit;
 import org.junit.Assert;
 import org.junit.Test;
-
-import apex.jorje.semantic.ast.compilation.Compilation;
 
 public class ASTUserInterfaceTest extends ApexParserTestBase {
 
     @Test
     public void testInterfaceName() {
-        ApexNode<Compilation> node = parse("interface Foo { }");
+        ApexNode<CompilationUnit> node = parse("interface Foo { }");
         Assert.assertSame(ASTUserInterface.class, node.getClass());
         Assert.assertEquals("Foo", node.getImage());
     }
 
     @Test
     public void testInnerInterfaceName() {
-        ApexNode<Compilation> node = parse("class Foo { interface Bar { } }");
+        ApexNode<CompilationUnit> node = parse("class Foo { interface Bar { } }");
         Assert.assertSame(ASTUserClass.class, node.getClass());
         ASTUserInterface innerNode = node.getFirstDescendantOfType(ASTUserInterface.class);
         Assert.assertNotNull(innerNode);

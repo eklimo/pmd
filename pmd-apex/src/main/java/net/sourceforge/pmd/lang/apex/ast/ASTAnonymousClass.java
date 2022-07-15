@@ -4,15 +4,14 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
+import com.google.summit.ast.Node;
 import net.sourceforge.pmd.annotation.InternalApi;
 
-import apex.jorje.semantic.ast.compilation.AnonymousClass;
-
-public class ASTAnonymousClass extends ApexRootNode<AnonymousClass> {
+public class ASTAnonymousClass extends ApexRootNode<Node> {
 
     @Deprecated
     @InternalApi
-    public ASTAnonymousClass(AnonymousClass anonymousClass) {
+    public ASTAnonymousClass(Node anonymousClass) {
         super(anonymousClass);
     }
 
