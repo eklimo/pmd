@@ -37,19 +37,19 @@ public enum TriggerUsage {
         // APEX_TO_PMD = new HashMap<>();
         for (TriggerUsage triggerUsage : TriggerUsage.values()) {
             // APEX_TO_PMD.put(triggerUsage.getApexTriggerUsage(), triggerUsage);
-            // TODO
+            // TODO(b/239648780)
         }
     }
 
     TriggerUsage(/*apex.jorje.data.ast.TriggerUsage apexTriggerUsage*/) {
         // this.apexTriggerUsage = apexTriggerUsage;
-        // TODO
+        // TODO(b/239648780)
     }
 
     // private apex.jorje.data.ast.TriggerUsage getApexTriggerUsage() {
     //     return apexTriggerUsage;
     // }
-    // TODO
+    // TODO(b/239648780)
 
     /*
     public static TriggerUsage of(apex.jorje.data.ast.TriggerUsage apexTriggerUsage) {
@@ -60,5 +60,5 @@ public enum TriggerUsage {
         throw new NoSuchElementException("Unknown TriggerUsage value '" + apexTriggerUsage.name() + "'");
     }
      */
-    // TODO
+    // TODO(b/239648780)
 }

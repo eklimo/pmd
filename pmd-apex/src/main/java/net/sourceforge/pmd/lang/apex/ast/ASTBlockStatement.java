@@ -36,6 +36,6 @@ public class ASTBlockStatement extends AbstractApexNode<Node> {
         // regardless whether curly braces where present or not.
         // char firstChar = source.charAt(node.getLoc().getStartIndex());
         // curlyBrace = firstChar == '{';
-        // TODO
+        // TODO(b/239648780)
     }
 }

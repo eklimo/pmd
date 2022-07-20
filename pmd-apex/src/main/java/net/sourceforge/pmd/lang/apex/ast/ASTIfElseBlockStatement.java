@@ -22,7 +22,7 @@ public class ASTIfElseBlockStatement extends AbstractApexNode<Node> {
 
     public boolean hasElseStatement() {
         // return node.hasElseStatement();
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 }

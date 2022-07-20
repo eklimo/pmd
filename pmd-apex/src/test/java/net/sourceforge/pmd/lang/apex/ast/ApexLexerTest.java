@@ -33,7 +33,7 @@ public class ApexLexerTest {
         }
         Assert.assertEquals(43, tokenCount);
          */
-        // TODO
+        // TODO(b/239648780)
     }
 
     @Test
@@ -45,6 +45,6 @@ public class ApexLexerTest {
         CompilationUnit compilationUnit = parser.compilationUnit();
         Assert.assertNotNull(compilationUnit);
          */
-        // TODO
+        // TODO(b/239648780)
     }
 }

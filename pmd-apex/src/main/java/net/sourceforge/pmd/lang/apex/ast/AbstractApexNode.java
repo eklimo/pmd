@@ -44,7 +44,7 @@ public abstract class AbstractApexNode<T extends Node> extends AbstractApexNodeB
 
         // Location loc = node.getLoc();
         // calculateLineNumbers(positioner, loc.getStartIndex(), loc.getEndIndex());
-        // TODO
+        // TODO(b/239648780)
     }
 
     protected void handleSourceCode(String source) {
@@ -63,7 +63,7 @@ public abstract class AbstractApexNode<T extends Node> extends AbstractApexNodeB
         try {
             // Location loc = node.getLoc();
             // return loc != null && Locations.isReal(loc);
-            // TODO
+            // TODO(b/239648780)
             return false;
         } catch (IndexOutOfBoundsException | NullPointerException e) {
             // bug in apex-jorje? happens on some ReferenceExpression nodes
@@ -74,7 +74,7 @@ public abstract class AbstractApexNode<T extends Node> extends AbstractApexNodeB
     public String getLocation() {
         if (hasRealLoc()) {
             // return String.valueOf(node.getLoc());
-            // TODO
+            // TODO(b/239648780)
             return null;
         } else {
             return "no location";
@@ -88,7 +88,7 @@ public abstract class AbstractApexNode<T extends Node> extends AbstractApexNodeB
     //         return null;
     //     }
     // }
-    // TODO
+    // TODO(b/239648780)
 
     @Override
     public String getDefiningType() {
@@ -96,7 +96,7 @@ public abstract class AbstractApexNode<T extends Node> extends AbstractApexNodeB
         // if (definingType != null) {
         //     return definingType.getApexName();
         // }
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 
@@ -106,7 +106,7 @@ public abstract class AbstractApexNode<T extends Node> extends AbstractApexNodeB
         // if (definingType != null) {
         //     return definingType.getNamespace().toString();
         // }
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 }

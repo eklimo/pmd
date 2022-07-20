@@ -30,47 +30,47 @@ public class ASTLiteralExpression extends AbstractApexNode<Node> {
         return node.getLiteralType();
     }
      */
-    // TODO
+    // TODO(b/239648780)
 
     public boolean isString() {
         // return node.getLiteralType() == LiteralType.STRING;
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 
     public boolean isBoolean() {
         // return node.getLiteralType() == LiteralType.TRUE || node.getLiteralType() == LiteralType.FALSE;
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 
     public boolean isInteger() {
         // return node.getLiteralType() == LiteralType.INTEGER;
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 
     public boolean isDouble() {
         // return node.getLiteralType() == LiteralType.DOUBLE;
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 
     public boolean isLong() {
         // return node.getLiteralType() == LiteralType.LONG;
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 
     public boolean isDecimal() {
         // return node.getLiteralType() == LiteralType.DECIMAL;
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 
     public boolean isNull() {
         // return node.getLiteralType() == LiteralType.NULL;
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 
@@ -81,7 +81,7 @@ public class ASTLiteralExpression extends AbstractApexNode<Node> {
             return String.valueOf(node.getLiteral());
         }
          */
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 
@@ -106,7 +106,7 @@ public class ASTLiteralExpression extends AbstractApexNode<Node> {
             }).map(Identifier::getValue).orElse(null);
         }
          */
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 }

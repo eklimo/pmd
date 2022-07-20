@@ -80,7 +80,7 @@ public class ASTUserClass extends ApexRootNode<CompilationUnit> implements ASTUs
             .map(it -> it.stream().map(Identifier::getValue).collect(Collectors.joining(".")))
             .orElse("");
          */
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 
@@ -90,7 +90,7 @@ public class ASTUserClass extends ApexRootNode<CompilationUnit> implements ASTUs
                 .map(TypeRef::getNames).map(it -> it.stream().map(Identifier::getValue).collect(Collectors.joining(".")))
                 .collect(Collectors.toList());
          */
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 }

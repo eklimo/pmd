@@ -28,7 +28,7 @@ public class ASTAnnotation extends AbstractApexNode<Node> {
     @Override
     public String getImage() {
         // return node.getType().getApexName();
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 
@@ -58,7 +58,7 @@ public class ASTAnnotation extends AbstractApexNode<Node> {
 
     public boolean isResolved() {
         // return node.getType().isResolved();
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 }

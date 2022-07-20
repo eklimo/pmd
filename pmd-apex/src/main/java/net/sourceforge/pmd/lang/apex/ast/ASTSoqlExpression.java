@@ -22,13 +22,13 @@ public class ASTSoqlExpression extends AbstractApexNode<Node> {
 
     public String getQuery() {
         // return node.getRawQuery();
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 
     public String getCanonicalQuery() {
         // return node.getCanonicalQuery();
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 }

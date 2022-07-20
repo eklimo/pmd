@@ -16,7 +16,7 @@ public class ASTFormalComment extends AbstractApexNode<Node> {
 
     ASTFormalComment(Token token) {
         // super(new AstComment(token));
-        // TODO
+        // TODO(b/239648780)
         super(null);
         this.image = token.getText();
     }
@@ -24,7 +24,7 @@ public class ASTFormalComment extends AbstractApexNode<Node> {
     @Deprecated
     public ASTFormalComment(String token) {
         // super(new AstComment(null));
-        // TODO
+        // TODO(b/239648780)
         super(null);
         image = token;
     }
@@ -82,5 +82,5 @@ public class ASTFormalComment extends AbstractApexNode<Node> {
         }
     }
      */
-    // TODO
+    // TODO(b/239648780)
 }

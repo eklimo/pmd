@@ -24,7 +24,7 @@ public class ASTParameter extends AbstractApexNode<Node> implements CanSuppressW
     @Override
     public String getImage() {
         // return node.getName().getValue();
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 
@@ -46,7 +46,7 @@ public class ASTParameter extends AbstractApexNode<Node> implements CanSuppressW
 
     public String getType() {
         // return node.getType().getApexName();
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 }

@@ -47,7 +47,7 @@ public abstract class ApexRootNode<T extends Node> extends AbstractApexNode<T> i
      */
     public double getApexVersion() {
         // return node.getDefiningType().getCodeUnitDetails().getVersion().getExternal();
-        // TODO
+        // TODO(b/239648780)
         return 0;
     }
 

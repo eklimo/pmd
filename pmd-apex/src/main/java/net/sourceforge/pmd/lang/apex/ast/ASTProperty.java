@@ -22,7 +22,7 @@ public class ASTProperty extends AbstractApexNode<Node> {
 
     public String getType() {
         // return node.getFieldInfo().getType().getApexName();
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 

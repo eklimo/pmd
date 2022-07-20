@@ -28,7 +28,7 @@ public class ASTVariableDeclaration extends AbstractApexNode<Node> implements Ca
             return node.getLocalInfo().getName();
         }
          */
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 
@@ -52,7 +52,7 @@ public class ASTVariableDeclaration extends AbstractApexNode<Node> implements Ca
             return node.getLocalInfo().getType().getApexName();
         }
          */
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 }

@@ -31,7 +31,7 @@ public class ASTReferenceExpression extends AbstractApexNode<Node> {
         return node.getContext();
     }
      */
-    // TODO
+    // TODO(b/239648780)
 
 
     /*
@@ -39,7 +39,7 @@ public class ASTReferenceExpression extends AbstractApexNode<Node> {
         return node.getReferenceType();
     }
      */
-    // TODO
+    // TODO(b/239648780)
 
     @Override
     public String getImage() {
@@ -48,7 +48,7 @@ public class ASTReferenceExpression extends AbstractApexNode<Node> {
             return node.getNames().get(0).getValue();
         }
          */
-        // TODO
+        // TODO(b/239648780)
         return null;
     }
 
@@ -59,13 +59,13 @@ public class ASTReferenceExpression extends AbstractApexNode<Node> {
             return identifiers.stream().map(id -> id.getValue()).collect(Collectors.toList());
         }
          */
-        // TODO
+        // TODO(b/239648780)
         return Collections.emptyList();
     }
 
     public boolean isSafeNav() {
         // return node.isSafeNav();
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 
@@ -76,7 +76,7 @@ public class ASTReferenceExpression extends AbstractApexNode<Node> {
             return identifiers.stream().anyMatch(id -> "sobjecttype".equalsIgnoreCase(id.getValue()));
         }
          */
-        // TODO
+        // TODO(b/239648780)
         return false;
     }
 }

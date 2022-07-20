@@ -29,7 +29,7 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
         private int nestingLevel = 0;
 
         // private BooleanOp currentBooleanOperation = null;
-        // TODO
+        // TODO(b/239648780)
         private String methodName = null;
 
         public double getComplexity() {
@@ -62,7 +62,7 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
             }
         }
          */
-        // TODO
+        // TODO(b/239648780)
 
         void increaseNestingLevel() {
             nestingLevel++;
@@ -184,7 +184,7 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
             state.booleanOperation(op);
         }
          */
-        // TODO
+        // TODO(b/239648780)
 
         return super.visit(node, data);
     }
@@ -199,7 +199,7 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
             state.booleanOperation(null);
         }
          */
-        // TODO
+        // TODO(b/239648780)
 
         return super.visit(node, data);
     }
@@ -212,7 +212,7 @@ public class CognitiveComplexityVisitor extends ApexParserVisitorAdapter {
             // This needs to happen because the current 'run' of boolean operations is terminated
             // once we finish a statement.
             // state.booleanOperation(null);
-            // TODO
+            // TODO(b/239648780)
 
             child.jjtAccept(this, data);
         }
