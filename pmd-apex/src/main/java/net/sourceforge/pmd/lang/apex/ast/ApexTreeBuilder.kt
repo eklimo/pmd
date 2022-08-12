@@ -26,6 +26,7 @@ import com.google.summit.ast.modifier.KeywordModifier
 import com.google.summit.ast.modifier.KeywordModifier.Keyword
 import com.google.summit.ast.modifier.Modifier
 import com.google.summit.ast.statement.CompoundStatement
+import com.google.summit.ast.statement.ExpressionStatement
 
 @Deprecated("internal")
 @InternalApi
@@ -72,6 +73,8 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is FieldDeclarationGroup -> buildFieldDeclarationGroup(node)
             is FieldDeclaration -> ASTFieldDeclaration(node).apply { buildChildren(node, parent = this) }
             is CompoundStatement -> ASTBlockStatement(node).apply { buildChildren(node, parent = this) }
+            is ExpressionStatement ->
+                ASTExpressionStatement(node).apply { buildChildren(node, parent = this) }
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
