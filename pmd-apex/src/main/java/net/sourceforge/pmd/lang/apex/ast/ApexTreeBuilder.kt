@@ -22,6 +22,7 @@ import com.google.summit.ast.declaration.MethodDeclaration
 import com.google.summit.ast.declaration.PropertyDeclaration
 import com.google.summit.ast.declaration.TriggerDeclaration
 import com.google.summit.ast.declaration.TypeDeclaration
+import com.google.summit.ast.expression.AssignExpression
 import com.google.summit.ast.modifier.KeywordModifier
 import com.google.summit.ast.modifier.KeywordModifier.Keyword
 import com.google.summit.ast.modifier.Modifier
@@ -75,6 +76,8 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is CompoundStatement -> ASTBlockStatement(node).apply { buildChildren(node, parent = this) }
             is ExpressionStatement ->
                 ASTExpressionStatement(node).apply { buildChildren(node, parent = this) }
+            is AssignExpression ->
+                ASTAssignmentExpression(node).apply { buildChildren(node, parent = this) }
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
