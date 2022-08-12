@@ -24,8 +24,10 @@ import com.google.summit.ast.declaration.TriggerDeclaration
 import com.google.summit.ast.declaration.TypeDeclaration
 import com.google.summit.ast.expression.ArrayExpression
 import com.google.summit.ast.expression.AssignExpression
+import com.google.summit.ast.expression.BinaryExpression
 import com.google.summit.ast.expression.CastExpression
 import com.google.summit.ast.expression.LiteralExpression
+import com.google.summit.ast.expression.UnaryExpression
 import com.google.summit.ast.modifier.KeywordModifier
 import com.google.summit.ast.modifier.KeywordModifier.Keyword
 import com.google.summit.ast.modifier.Modifier
@@ -85,6 +87,8 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is LiteralExpression ->
                 ASTLiteralExpression(node).apply { buildChildren(node, parent = this) }
             is CastExpression -> ASTCastExpression(node).apply { buildChildren(node, parent = this) }
+            is BinaryExpression -> buildBinaryExpression(node)
+            is UnaryExpression -> buildUnaryExpression(node)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
@@ -166,6 +170,57 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             ASTArrayLoadExpression(node)
         }
             .apply { buildChildren(node, parent = this) }
+
+    /**
+     * Builds an [ASTBinaryExpression], [ASTBooleanExpression], or [ASTInstanceOfExpression] wrapper
+     * for the [BinaryExpression] node.
+     */
+    private fun buildBinaryExpression(node: BinaryExpression) =
+        when (node.op) {
+            BinaryExpression.Operator.INSTANCEOF -> ASTInstanceOfExpression(node)
+            BinaryExpression.Operator.GREATER_THAN_OR_EQUAL,
+            BinaryExpression.Operator.GREATER_THAN,
+            BinaryExpression.Operator.LESS_THAN,
+            BinaryExpression.Operator.LESS_THAN_OR_EQUAL,
+            BinaryExpression.Operator.EQUAL,
+            BinaryExpression.Operator.NOT_EQUAL,
+            BinaryExpression.Operator.ALTERNATIVE_NOT_EQUAL,
+            BinaryExpression.Operator.EXACTLY_EQUAL,
+            BinaryExpression.Operator.EXACTLY_NOT_EQUAL,
+            BinaryExpression.Operator.BITWISE_XOR,
+            BinaryExpression.Operator.LOGICAL_AND,
+            BinaryExpression.Operator.LOGICAL_OR,
+            -> ASTBooleanExpression(node)
+            BinaryExpression.Operator.ADDITION,
+            BinaryExpression.Operator.SUBTRACTION,
+            BinaryExpression.Operator.MULTIPLICATION,
+            BinaryExpression.Operator.DIVISION,
+            BinaryExpression.Operator.MODULO,
+            BinaryExpression.Operator.LEFT_SHIFT,
+            BinaryExpression.Operator.RIGHT_SHIFT_SIGNED,
+            BinaryExpression.Operator.RIGHT_SHIFT_UNSIGNED,
+            BinaryExpression.Operator.BITWISE_AND,
+            BinaryExpression.Operator.BITWISE_OR,
+            -> ASTBinaryExpression(node)
+        }.apply { buildChildren(node, parent = this) }
+
+    /**
+     * Builds an [ASTPrefixExpression] or [ASTPostfixExpression] wrapper for the [UnaryExpression]
+     * node.
+     */
+    private fun buildUnaryExpression(node: UnaryExpression) =
+        when (node.op) {
+            UnaryExpression.Operator.PLUS,
+            UnaryExpression.Operator.NEGATION,
+            UnaryExpression.Operator.LOGICAL_COMPLEMENT,
+            UnaryExpression.Operator.BITWISE_NOT,
+            UnaryExpression.Operator.PRE_INCREMENT,
+            UnaryExpression.Operator.PRE_DECREMENT,
+            -> ASTPrefixExpression(node)
+            UnaryExpression.Operator.POST_INCREMENT,
+            UnaryExpression.Operator.POST_DECREMENT,
+            -> ASTPostfixExpression(node)
+        }.apply { buildChildren(node, parent = this) }
 
     /** Builds an [ASTModifierNode] wrapper for the list of [Modifier]s. */
     private fun buildModifiers(modifiers: List<Modifier>) =
