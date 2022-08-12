@@ -22,6 +22,7 @@ import com.google.summit.ast.declaration.MethodDeclaration
 import com.google.summit.ast.declaration.PropertyDeclaration
 import com.google.summit.ast.declaration.TriggerDeclaration
 import com.google.summit.ast.declaration.TypeDeclaration
+import com.google.summit.ast.expression.ArrayExpression
 import com.google.summit.ast.expression.AssignExpression
 import com.google.summit.ast.modifier.KeywordModifier
 import com.google.summit.ast.modifier.KeywordModifier.Keyword
@@ -78,6 +79,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
                 ASTExpressionStatement(node).apply { buildChildren(node, parent = this) }
             is AssignExpression ->
                 ASTAssignmentExpression(node).apply { buildChildren(node, parent = this) }
+            is ArrayExpression -> buildArrayExpression(node)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
@@ -147,6 +149,18 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             buildModifiers(node.modifiers).also { it.setParent(this) }
             buildChildren(node, parent = this, exclude = { it in node.modifiers })
         }
+
+    /**
+     * Builds an [ASTArrayStoreExpression] or [ASTArrayLoadExpression] wrapper for the
+     * [ArrayExpression] node.
+     */
+    private fun buildArrayExpression(node: ArrayExpression) =
+        if ((node.parent as? AssignExpression)?.target == node) {
+            ASTArrayStoreExpression(node)
+        } else {
+            ASTArrayLoadExpression(node)
+        }
+            .apply { buildChildren(node, parent = this) }
 
     /** Builds an [ASTModifierNode] wrapper for the list of [Modifier]s. */
     private fun buildModifiers(modifiers: List<Modifier>) =
