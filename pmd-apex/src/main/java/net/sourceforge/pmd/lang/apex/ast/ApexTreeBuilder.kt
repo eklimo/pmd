@@ -29,6 +29,7 @@ import com.google.summit.ast.expression.CastExpression
 import com.google.summit.ast.expression.LiteralExpression
 import com.google.summit.ast.expression.SuperExpression
 import com.google.summit.ast.expression.ThisExpression
+import com.google.summit.ast.expression.TypeRefExpression
 import com.google.summit.ast.expression.UnaryExpression
 import com.google.summit.ast.modifier.KeywordModifier
 import com.google.summit.ast.modifier.KeywordModifier.Keyword
@@ -95,6 +96,8 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
                 ASTSuperVariableExpression(node).apply { buildChildren(node, parent = this) }
             is ThisExpression ->
                 ASTThisVariableExpression(node).apply { buildChildren(node, parent = this) }
+            is TypeRefExpression ->
+                ASTClassRefExpression(node).apply { buildChildren(node, parent = this) }
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
