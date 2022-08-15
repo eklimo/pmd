@@ -76,20 +76,14 @@ public abstract class AbstractApexNode extends AbstractApexNodeBase implements A
                 setLineNumbers(node.getSourceLocation());
             }
         }
-
-        @Override
-        public boolean hasRealLoc() {
-            return false;
-        }
-
-        @Override
-        public String getLocation() {
-            return "no location";
-        }
     }
 
     protected AbstractApexNode(Class<?> klass) {
         super(klass);
+    }
+
+    protected AbstractApexNode() {
+        this(Void.class);
     }
 
     @Override
@@ -107,15 +101,21 @@ public abstract class AbstractApexNode extends AbstractApexNodeBase implements A
         return (Iterable<? extends ApexNode<?>>) super.children();
     }
 
-    abstract void calculateLineNumbers(SourceCodePositioner positioner);
+    void calculateLineNumbers(SourceCodePositioner positioner) {
+        // default implementation does nothing
+    }
 
     protected void handleSourceCode(String source) {
         // default implementation does nothing
     }
 
-    public abstract boolean hasRealLoc();
+    public boolean hasRealLoc() {
+        return false;
+    }
 
-    public abstract String getLocation();
+    public String getLocation() {
+        return "no location";
+    }
 
     // private TypeInfo getDefiningTypeOrNull() {
     //     try {
