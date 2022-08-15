@@ -25,12 +25,16 @@ import com.google.summit.ast.declaration.TypeDeclaration
 import com.google.summit.ast.expression.ArrayExpression
 import com.google.summit.ast.expression.AssignExpression
 import com.google.summit.ast.expression.BinaryExpression
+import com.google.summit.ast.expression.CallExpression
 import com.google.summit.ast.expression.CastExpression
+import com.google.summit.ast.expression.Expression
+import com.google.summit.ast.expression.FieldExpression
 import com.google.summit.ast.expression.LiteralExpression
 import com.google.summit.ast.expression.SuperExpression
 import com.google.summit.ast.expression.ThisExpression
 import com.google.summit.ast.expression.TypeRefExpression
 import com.google.summit.ast.expression.UnaryExpression
+import com.google.summit.ast.expression.VariableExpression
 import com.google.summit.ast.modifier.KeywordModifier
 import com.google.summit.ast.modifier.KeywordModifier.Keyword
 import com.google.summit.ast.modifier.Modifier
@@ -98,6 +102,8 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
                 ASTThisVariableExpression(node).apply { buildChildren(node, parent = this) }
             is TypeRefExpression ->
                 ASTClassRefExpression(node).apply { buildChildren(node, parent = this) }
+            is FieldExpression -> buildFieldExpression(node)
+            is VariableExpression -> buildVariableExpression(node)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
@@ -109,7 +115,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
         }
 
     /** Builds an [ApexNode] wrapper for [node] and sets its parent to [parent]. */
-    private fun buildAndSetParent(node: Node, parent: ApexNode<*>) =
+    private fun buildAndSetParent(node: Node?, parent: ApexNode<*>) =
         build(node, parent)?.also { it.setParent(parent) }
 
     /**
@@ -230,6 +236,71 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             UnaryExpression.Operator.POST_DECREMENT,
             -> ASTPostfixExpression(node)
         }.apply { buildChildren(node, parent = this) }
+
+    /** Builds an [ASTVariableExpression] wrapper for the [FieldExpression] node. */
+    private fun buildFieldExpression(node: FieldExpression): ASTVariableExpression {
+        val (components, receiver, isSafe) = flattenExpression(node)
+        return ASTVariableExpression(components.last()).apply {
+            buildReferenceExpression(components.dropLast(1), receiver, isSafe).also { it.setParent(this) }
+        }
+    }
+
+    /** Builds an [ASTVariableExpression] wrapper for the [VariableExpression] node. */
+    private fun buildVariableExpression(node: VariableExpression): ASTVariableExpression {
+        val (components, receiver, isSafe) = flattenExpression(node)
+        return ASTVariableExpression(components.last()).apply {
+            buildReferenceExpression(components.dropLast(1), receiver, isSafe).also { it.setParent(this) }
+        }
+    }
+
+    /**
+     * Attempts to flatten an [Expression] tree containing variable references into a list of
+     * [Identifier]s. Applicable nodes are [FieldExpression] and [VariableExpression].
+     *
+     * @return [Triple] of
+     * 1. List of extracted [Identifier]s
+     * 2. The remaining [Expression] that could not be flattened
+     * 3. Whether a [safe access][FieldExpression.isSafe] was found
+     */
+    private fun flattenExpression(
+        node: Expression,
+        components: List<Identifier> = emptyList()
+    ): Triple<List<Identifier>, Expression?, Boolean> =
+        when (node) {
+            is FieldExpression ->
+                if (node.isSafe) {
+                    // Don't flatten a safe access
+                    Triple(listOf(node.field) + components, node.obj, true)
+                } else {
+                    // Extract node.field and continue flattening
+                    flattenExpression(node.obj, listOf(node.field) + components)
+                }
+            is VariableExpression ->
+                // Extract node.id and stop
+                Triple(listOf(node.id) + components, null, false)
+            else ->
+                // Can't flatten
+                Triple(components, node, false)
+        }
+
+    /**
+     * Builds an [ASTReferenceExpression] or [ASTEmptyReferenceExpression] from [components].
+     *
+     * @param components the [Identifier]s in this reference expression
+     * @param receiver the node that is being accessed
+     * @param isSafe whether this is a safe access
+     */
+    private fun buildReferenceExpression(
+        components: List<Identifier>,
+        receiver: Node?,
+        isSafe: Boolean
+    ) =
+        if (receiver == null && components.isEmpty()) {
+            ASTEmptyReferenceExpression()
+        } else {
+            ASTReferenceExpression(components, isSafe)
+        }
+            .apply { buildAndSetParent(receiver, parent = this) }
 
     /** Builds an [ASTModifierNode] wrapper for the list of [Modifier]s. */
     private fun buildModifiers(modifiers: List<Modifier>) =

@@ -4,27 +4,29 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
-import com.google.summit.ast.Node;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import net.sourceforge.pmd.annotation.InternalApi;
 
-public class ASTReferenceExpression extends AbstractApexNode.Single<Node> {
+import com.google.summit.ast.Identifier;
+
+public class ASTReferenceExpression extends AbstractApexNode.Many<Identifier> {
+
+    private final boolean isSafe;
 
     @Deprecated
     @InternalApi
-    public ASTReferenceExpression(Node referenceExpression) {
-        super(referenceExpression);
+    public ASTReferenceExpression(List<Identifier> identifiers, boolean isSafe) {
+        super(identifiers);
+        this.isSafe = isSafe;
     }
-
 
     @Override
     public Object jjtAccept(ApexParserVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
-
 
     /*
     public IdentifierContext getContext() {
@@ -43,30 +45,18 @@ public class ASTReferenceExpression extends AbstractApexNode.Single<Node> {
 
     @Override
     public String getImage() {
-        /*
-        if (node.getNames() != null && !node.getNames().isEmpty()) {
-            return node.getNames().get(0).getValue();
+        if (!nodes.isEmpty()) {
+            return nodes.get(0).asCodeString();
         }
-         */
-        // TODO(b/239648780)
-        return null;
+        return "";
     }
 
     public List<String> getNames() {
-        /*
-        List<Identifier> identifiers = node.getNames();
-        if (identifiers != null) {
-            return identifiers.stream().map(id -> id.getValue()).collect(Collectors.toList());
-        }
-         */
-        // TODO(b/239648780)
-        return Collections.emptyList();
+        return nodes.stream().map(Identifier::asCodeString).collect(Collectors.toList());
     }
 
     public boolean isSafeNav() {
-        // return node.isSafeNav();
-        // TODO(b/239648780)
-        return false;
+        return this.isSafe;
     }
 
     public boolean isSObjectType() {
