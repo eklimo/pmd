@@ -31,6 +31,7 @@ import com.google.summit.ast.expression.Expression
 import com.google.summit.ast.expression.FieldExpression
 import com.google.summit.ast.expression.LiteralExpression
 import com.google.summit.ast.expression.SuperExpression
+import com.google.summit.ast.expression.TernaryExpression
 import com.google.summit.ast.expression.ThisExpression
 import com.google.summit.ast.expression.TypeRefExpression
 import com.google.summit.ast.expression.UnaryExpression
@@ -105,6 +106,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is FieldExpression -> buildFieldExpression(node)
             is VariableExpression -> buildVariableExpression(node)
             is CallExpression -> buildCallExpression(node)
+            is TernaryExpression -> buildTernaryExpression(node)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
@@ -331,6 +333,17 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             ASTReferenceExpression(components, isSafe)
         }
             .apply { buildAndSetParent(receiver, parent = this) }
+
+    /** Builds an [ASTTernaryExpression] wrapper for the [TernaryExpression]. */
+    private fun buildTernaryExpression(node: TernaryExpression) =
+        ASTTernaryExpression(node).apply {
+            buildCondition(node.condition).also { it.setParent(this) }
+            buildChildren(node, parent = this, exclude = { it == node.condition })
+        }
+
+    /** Builds an [ASTStandardCondition] wrapper for the [condition]. */
+    private fun buildCondition(condition: Node?) =
+        ASTStandardCondition(condition).apply { buildAndSetParent(condition, this) }
 
     /** Builds an [ASTModifierNode] wrapper for the list of [Modifier]s. */
     private fun buildModifiers(modifiers: List<Modifier>) =
