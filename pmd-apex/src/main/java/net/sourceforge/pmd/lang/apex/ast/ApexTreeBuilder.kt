@@ -104,6 +104,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
                 ASTClassRefExpression(node).apply { buildChildren(node, parent = this) }
             is FieldExpression -> buildFieldExpression(node)
             is VariableExpression -> buildVariableExpression(node)
+            is CallExpression -> buildCallExpression(node)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
@@ -254,16 +255,36 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
     }
 
     /**
+     * Builds an [ASTMethodCallExpression], [ASTThisMethodCallExpression], or
+     * [ASTSuperMethodCallExpression] wrapper for the [CallExpression] node.
+     */
+    private fun buildCallExpression(node: CallExpression) =
+        when (node.id.string.lowercase()) {
+            "this" -> ASTThisMethodCallExpression(node).apply { buildChildren(node, parent = this) }
+            "super" -> ASTSuperMethodCallExpression(node).apply { buildChildren(node, parent = this) }
+            else -> {
+                val (components, receiver, isSafe) = flattenExpression(node)
+                ASTMethodCallExpression(node).apply {
+                    buildReferenceExpression(components.dropLast(1), receiver, isSafe).also {
+                        it.setParent(this)
+                    }
+                    buildChildren(node, parent = this, exclude = { it == node.receiver })
+                }
+            }
+        }
+
+    /**
      * Attempts to flatten an [Expression] tree containing variable references into a list of
-     * [Identifier]s. Applicable nodes are [FieldExpression] and [VariableExpression].
+     * [Identifier]s. Applicable nodes are [FieldExpression], [CallExpression], and
+     * [VariableExpression].
      *
      * @return [Triple] of
      * 1. List of extracted [Identifier]s
      * 2. The remaining [Expression] that could not be flattened
-     * 3. Whether a [safe access][FieldExpression.isSafe] was found
+     * 3. Whether a safe [access][FieldExpression.isSafe] or [call][CallExpression.isSafe] was found
      */
     private fun flattenExpression(
-        node: Expression,
+        node: Expression?,
         components: List<Identifier> = emptyList()
     ): Triple<List<Identifier>, Expression?, Boolean> =
         when (node) {
@@ -275,6 +296,15 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
                     // Extract node.field and continue flattening
                     flattenExpression(node.obj, listOf(node.field) + components)
                 }
+            is CallExpression -> {
+                if (node.isSafe) {
+                    // Don't flatten a safe call
+                    Triple(listOf(node.id) + components, node.receiver, true)
+                } else {
+                    // Extract node.id and continue flattening
+                    flattenExpression(node.receiver, listOf(node.id) + components)
+                }
+            }
             is VariableExpression ->
                 // Extract node.id and stop
                 Triple(listOf(node.id) + components, null, false)

@@ -4,16 +4,17 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
-import com.google.summit.ast.Node;
 import java.util.Iterator;
 
 import net.sourceforge.pmd.annotation.InternalApi;
 
-public class ASTMethodCallExpression extends AbstractApexNode.Single<Node> {
+import com.google.summit.ast.expression.CallExpression;
+
+public class ASTMethodCallExpression extends AbstractApexNode.Single<CallExpression> {
     @Deprecated
     @InternalApi
-    public ASTMethodCallExpression(Node methodCallExpression) {
-        super(methodCallExpression);
+    public ASTMethodCallExpression(CallExpression callExpression) {
+        super(callExpression);
     }
 
     @Override
@@ -22,9 +23,7 @@ public class ASTMethodCallExpression extends AbstractApexNode.Single<Node> {
     }
 
     public String getMethodName() {
-        // return node.getMethodName();
-        // TODO(b/239648780)
-        return null;
+        return node.getId().asCodeString();
     }
 
     public String getFullMethodName() {
@@ -43,6 +42,6 @@ public class ASTMethodCallExpression extends AbstractApexNode.Single<Node> {
     public int getInputParametersSize() {
         // return node.getInputParameters().size();
         // TODO(b/239648780)
-        return 0;
+        return node.getArgs().size();
     }
 }
