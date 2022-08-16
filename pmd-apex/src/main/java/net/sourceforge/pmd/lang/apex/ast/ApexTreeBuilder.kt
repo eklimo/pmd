@@ -244,7 +244,13 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
     private fun buildFieldExpression(node: FieldExpression): ASTVariableExpression {
         val (components, receiver, isSafe) = flattenExpression(node)
         return ASTVariableExpression(components.last()).apply {
-            buildReferenceExpression(components.dropLast(1), receiver, isSafe).also { it.setParent(this) }
+            buildReferenceExpression(
+                components.dropLast(1),
+                receiver,
+                referenceTypeOf(expr = node),
+                isSafe
+            )
+                .also { it.setParent(this) }
         }
     }
 
@@ -252,7 +258,13 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
     private fun buildVariableExpression(node: VariableExpression): ASTVariableExpression {
         val (components, receiver, isSafe) = flattenExpression(node)
         return ASTVariableExpression(components.last()).apply {
-            buildReferenceExpression(components.dropLast(1), receiver, isSafe).also { it.setParent(this) }
+            buildReferenceExpression(
+                components.dropLast(1),
+                receiver,
+                referenceTypeOf(expr = node),
+                isSafe
+            )
+                .also { it.setParent(this) }
         }
     }
 
@@ -267,9 +279,8 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             else -> {
                 val (components, receiver, isSafe) = flattenExpression(node)
                 ASTMethodCallExpression(node).apply {
-                    buildReferenceExpression(components.dropLast(1), receiver, isSafe).also {
-                        it.setParent(this)
-                    }
+                    buildReferenceExpression(components.dropLast(1), receiver, ReferenceType.METHOD, isSafe)
+                        .also { it.setParent(this) }
                     buildChildren(node, parent = this, exclude = { it == node.receiver })
                 }
             }
@@ -325,14 +336,19 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
     private fun buildReferenceExpression(
         components: List<Identifier>,
         receiver: Node?,
+        referenceType: ReferenceType,
         isSafe: Boolean
     ) =
         if (receiver == null && components.isEmpty()) {
             ASTEmptyReferenceExpression()
         } else {
-            ASTReferenceExpression(components, isSafe)
+            ASTReferenceExpression(components, referenceType, isSafe)
         }
             .apply { buildAndSetParent(receiver, parent = this) }
+
+    /** Determines the [ReferenceType] of an [Expression]. */
+    private fun referenceTypeOf(expr: Expression) =
+        if (expr.parent is AssignExpression) ReferenceType.STORE else ReferenceType.LOAD
 
     /** Builds an [ASTTernaryExpression] wrapper for the [TernaryExpression]. */
     private fun buildTernaryExpression(node: TernaryExpression) =

@@ -14,12 +14,14 @@ import com.google.summit.ast.Identifier;
 
 public class ASTReferenceExpression extends AbstractApexNode.Many<Identifier> {
 
+    private final ReferenceType referenceType;
     private final boolean isSafe;
 
     @Deprecated
     @InternalApi
-    public ASTReferenceExpression(List<Identifier> identifiers, boolean isSafe) {
+    public ASTReferenceExpression(List<Identifier> identifiers, ReferenceType referenceType, boolean isSafe) {
         super(identifiers);
+        this.referenceType = referenceType;
         this.isSafe = isSafe;
     }
 
@@ -35,13 +37,9 @@ public class ASTReferenceExpression extends AbstractApexNode.Many<Identifier> {
      */
     // TODO(b/239648780)
 
-
-    /*
     public ReferenceType getReferenceType() {
-        return node.getReferenceType();
+        return referenceType;
     }
-     */
-    // TODO(b/239648780)
 
     @Override
     public String getImage() {
@@ -60,13 +58,11 @@ public class ASTReferenceExpression extends AbstractApexNode.Many<Identifier> {
     }
 
     public boolean isSObjectType() {
-        /*
-        List<Identifier> identifiers = node.getNames();
-        if (identifiers != null) {
-            return identifiers.stream().anyMatch(id -> "sobjecttype".equalsIgnoreCase(id.getValue()));
-        }
-         */
-        // TODO(b/239648780)
-        return false;
+        return nodes.stream().anyMatch(id -> "sobjecttype".contentEquals(id.asCodeString()));
+    }
+
+    @Override
+    public boolean hasRealLoc() {
+        return !nodes.isEmpty();
     }
 }
