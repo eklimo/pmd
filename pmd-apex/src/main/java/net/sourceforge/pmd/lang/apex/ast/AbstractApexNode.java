@@ -128,11 +128,10 @@ public abstract class AbstractApexNode extends AbstractApexNodeBase implements A
 
     @Override
     public String getDefiningType() {
-        // TypeInfo definingType = getDefiningTypeOrNull();
-        // if (definingType != null) {
-        //     return definingType.getApexName();
-        // }
-        // TODO(b/239648780)
+        ApexRootNode<?> rootNode = this instanceof ApexRootNode ? (ApexRootNode<?>) this : getFirstParentOfType(ApexRootNode.class);
+        if (rootNode != null) {
+            return rootNode.node.getQualifiedName();
+        }
         return null;
     }
 
