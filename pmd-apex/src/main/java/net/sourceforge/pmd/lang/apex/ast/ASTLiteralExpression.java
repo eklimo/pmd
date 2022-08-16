@@ -89,6 +89,8 @@ public class ASTLiteralExpression extends AbstractApexNode.Single<LiteralExpress
     public String getImage() {
         if (isString()) {
             return node.asCodeString().replace("'", "");
+        } else if (isNull()) {
+            return "";
         }
         return node.asCodeString();
     }
