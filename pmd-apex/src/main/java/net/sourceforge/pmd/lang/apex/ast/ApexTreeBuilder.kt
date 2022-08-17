@@ -45,6 +45,7 @@ import com.google.summit.ast.modifier.KeywordModifier
 import com.google.summit.ast.modifier.KeywordModifier.Keyword
 import com.google.summit.ast.modifier.Modifier
 import com.google.summit.ast.statement.CompoundStatement
+import com.google.summit.ast.statement.DmlStatement
 import com.google.summit.ast.statement.ExpressionStatement
 
 @Deprecated("internal")
@@ -117,6 +118,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is ValuesInitializer -> buildValuesInitializer(node)
             is MapInitializer -> buildMapInitializer(node)
             is SizedArrayInitializer -> buildSizedArrayInitializer(node)
+            is DmlStatement -> buildDmlStatement(node)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
@@ -423,6 +425,17 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
     /** Builds an [ASTNewListInitExpression] wrapper for the [SizedArrayInitializer]. */
     private fun buildSizedArrayInitializer(node: SizedArrayInitializer) =
         ASTNewListInitExpression(node).apply { buildChildren(node, parent = this) }
+
+    /** Builds an [ApexNode] wrapper for the [DmlStatement]. */
+    private fun buildDmlStatement(node: DmlStatement) =
+        when (node) {
+            is DmlStatement.Insert -> ASTDmlInsertStatement(node)
+            is DmlStatement.Update -> ASTDmlUpdateStatement(node)
+            is DmlStatement.Delete -> ASTDmlDeleteStatement(node)
+            is DmlStatement.Undelete -> ASTDmlUndeleteStatement(node)
+            is DmlStatement.Upsert -> ASTDmlUpsertStatement(node)
+            is DmlStatement.Merge -> ASTDmlMergeStatement(node)
+        }.apply { buildChildren(node, parent = this) }
 
     /** Builds an [ASTStandardCondition] wrapper for the [condition]. */
     private fun buildCondition(condition: Node?) =
