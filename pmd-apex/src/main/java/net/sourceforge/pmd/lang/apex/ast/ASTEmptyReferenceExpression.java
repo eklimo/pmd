@@ -10,4 +10,9 @@ public final class ASTEmptyReferenceExpression extends AbstractApexNode {
     public Object jjtAccept(ApexParserVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
+
+    @Override
+    public String getDefiningType() {
+        return null;
+    }
 }
