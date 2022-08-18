@@ -278,7 +278,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             "super" -> ASTSuperMethodCallExpression(node).apply { buildChildren(node, parent = this) }
             else -> {
                 val (components, receiver, isSafe) = flattenExpression(node)
-                ASTMethodCallExpression(node).apply {
+                ASTMethodCallExpression(node, components).apply {
                     buildReferenceExpression(components.dropLast(1), receiver, ReferenceType.METHOD, isSafe)
                         .also { it.setParent(this) }
                     buildChildren(node, parent = this, exclude = { it == node.receiver })
