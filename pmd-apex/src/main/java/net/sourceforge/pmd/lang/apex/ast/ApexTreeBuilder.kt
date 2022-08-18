@@ -205,10 +205,8 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             BinaryExpression.Operator.ALTERNATIVE_NOT_EQUAL,
             BinaryExpression.Operator.EXACTLY_EQUAL,
             BinaryExpression.Operator.EXACTLY_NOT_EQUAL,
-            BinaryExpression.Operator.BITWISE_XOR,
             BinaryExpression.Operator.LOGICAL_AND,
-            BinaryExpression.Operator.LOGICAL_OR,
-            -> ASTBooleanExpression(node)
+            BinaryExpression.Operator.LOGICAL_OR -> ASTBooleanExpression(node)
             BinaryExpression.Operator.ADDITION,
             BinaryExpression.Operator.SUBTRACTION,
             BinaryExpression.Operator.MULTIPLICATION,
@@ -219,7 +217,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             BinaryExpression.Operator.RIGHT_SHIFT_UNSIGNED,
             BinaryExpression.Operator.BITWISE_AND,
             BinaryExpression.Operator.BITWISE_OR,
-            -> ASTBinaryExpression(node)
+            BinaryExpression.Operator.BITWISE_XOR -> ASTBinaryExpression(node)
         }.apply { buildChildren(node, parent = this) }
 
     /**
