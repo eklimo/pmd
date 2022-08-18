@@ -44,13 +44,13 @@ public class ASTReferenceExpression extends AbstractApexNode.Many<Identifier> {
     @Override
     public String getImage() {
         if (!nodes.isEmpty()) {
-            return nodes.get(0).asCodeString();
+            return nodes.get(0).getString();
         }
         return "";
     }
 
     public List<String> getNames() {
-        return nodes.stream().map(Identifier::asCodeString).collect(Collectors.toList());
+        return nodes.stream().map(Identifier::getString).collect(Collectors.toList());
     }
 
     public boolean isSafeNav() {
@@ -58,7 +58,7 @@ public class ASTReferenceExpression extends AbstractApexNode.Many<Identifier> {
     }
 
     public boolean isSObjectType() {
-        return nodes.stream().anyMatch(id -> "sobjecttype".contentEquals(id.asCodeString()));
+        return nodes.stream().anyMatch(id -> "sobjecttype".contentEquals(id.getString()));
     }
 
     @Override

@@ -30,11 +30,11 @@ public class ASTMethodCallExpression extends AbstractApexNode.Single<CallExpress
     }
 
     public String getMethodName() {
-        return node.getId().asCodeString();
+        return node.getId().getString();
     }
 
     public String getFullMethodName() {
-        return components.stream().map(Identifier::asCodeString).collect(Collectors.joining("."));
+        return components.stream().map(Identifier::getString).collect(Collectors.joining("."));
     }
 
     public int getInputParametersSize() {

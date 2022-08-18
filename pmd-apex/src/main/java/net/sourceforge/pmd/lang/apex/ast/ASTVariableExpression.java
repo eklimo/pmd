@@ -23,6 +23,6 @@ public class ASTVariableExpression extends AbstractApexNode.Single<Identifier> {
 
     @Override
     public String getImage() {
-        return node.asCodeString();
+        return node.getString();
     }
 }
