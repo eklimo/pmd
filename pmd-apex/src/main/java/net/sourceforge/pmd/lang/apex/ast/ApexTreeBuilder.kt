@@ -30,6 +30,7 @@ import com.google.summit.ast.expression.CastExpression
 import com.google.summit.ast.expression.Expression
 import com.google.summit.ast.expression.FieldExpression
 import com.google.summit.ast.expression.LiteralExpression
+import com.google.summit.ast.expression.NewExpression
 import com.google.summit.ast.expression.SuperExpression
 import com.google.summit.ast.expression.TernaryExpression
 import com.google.summit.ast.expression.ThisExpression
@@ -107,6 +108,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is VariableExpression -> buildVariableExpression(node)
             is CallExpression -> buildCallExpression(node)
             is TernaryExpression -> buildTernaryExpression(node)
+            is NewExpression -> build(node.initializer, parent)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
