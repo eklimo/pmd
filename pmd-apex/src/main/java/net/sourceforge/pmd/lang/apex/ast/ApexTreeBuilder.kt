@@ -37,6 +37,7 @@ import com.google.summit.ast.expression.ThisExpression
 import com.google.summit.ast.expression.TypeRefExpression
 import com.google.summit.ast.expression.UnaryExpression
 import com.google.summit.ast.expression.VariableExpression
+import com.google.summit.ast.initializer.ConstructorInitializer
 import com.google.summit.ast.modifier.KeywordModifier
 import com.google.summit.ast.modifier.KeywordModifier.Keyword
 import com.google.summit.ast.modifier.Modifier
@@ -109,6 +110,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is CallExpression -> buildCallExpression(node)
             is TernaryExpression -> buildTernaryExpression(node)
             is NewExpression -> build(node.initializer, parent)
+            is ConstructorInitializer -> buildConstructorInitializer(node)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
@@ -364,6 +366,28 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             buildCondition(node.condition).also { it.setParent(this) }
             buildChildren(node, parent = this, exclude = { it == node.condition })
         }
+
+    /**
+     * Builds an [ASTNewListInitExpression], [ASTNewMapInitExpression], [ASTNewSetInitExpression],
+     * [ASTNewKeyValueObjectExpression], or [ASTNewObjectExpression] wrapper for the
+     * [ConstructorInitializer].
+     */
+    private fun buildConstructorInitializer(node: ConstructorInitializer) =
+        when (node.type.components.first().id.string.lowercase()) {
+            "list" -> ASTNewListInitExpression(node)
+            "map" -> ASTNewMapInitExpression(node)
+            "set" -> ASTNewSetInitExpression(node)
+            else -> {
+                // Object initializer
+                if (node.args.isNotEmpty() && node.args.first() is AssignExpression) {
+                    // Named arguments
+                    ASTNewKeyValueObjectExpression(node)
+                } else {
+                    // Unnamed arguments
+                    ASTNewObjectExpression(node)
+                }
+            }
+        }.apply { buildChildren(node, parent = this) }
 
     /** Builds an [ASTStandardCondition] wrapper for the [condition]. */
     private fun buildCondition(condition: Node?) =
