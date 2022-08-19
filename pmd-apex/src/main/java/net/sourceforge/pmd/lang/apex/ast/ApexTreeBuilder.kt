@@ -47,6 +47,8 @@ import com.google.summit.ast.modifier.Modifier
 import com.google.summit.ast.statement.CompoundStatement
 import com.google.summit.ast.statement.DmlStatement
 import com.google.summit.ast.statement.ExpressionStatement
+import com.google.summit.ast.statement.IfStatement
+import com.google.summit.ast.statement.Statement
 
 @Deprecated("internal")
 @InternalApi
@@ -119,6 +121,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is MapInitializer -> buildMapInitializer(node)
             is SizedArrayInitializer -> buildSizedArrayInitializer(node)
             is DmlStatement -> buildDmlStatement(node)
+            is IfStatement -> buildIfStatement(node)
             is Identifier,
             is KeywordModifier,
             is TypeRef -> null
@@ -436,6 +439,49 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             is DmlStatement.Upsert -> ASTDmlUpsertStatement(node)
             is DmlStatement.Merge -> ASTDmlMergeStatement(node)
         }.apply { buildChildren(node, parent = this) }
+
+    /** Wraps the body of a control statement with an [ASTBlockStatement] if it isn't already one. */
+    private fun wrapBody(body: Statement, parent: ApexNode<*>) =
+        when (body) {
+            is CompoundStatement -> build(body, parent) as ASTBlockStatement
+            else -> ASTBlockStatement(body).apply { buildAndSetParent(body, parent = this) }
+        }
+
+    /** Builds an [ASTIfElseBlockStatement] wrapper for the [IfStatement]. */
+    private fun buildIfStatement(node: IfStatement): ASTIfElseBlockStatement {
+        val (ifBlocks, elseBlock) = flattenIfStatement(node)
+
+        /** Builds an [ASTIfBlockStatement] wrapper for the [if block][IfStatement]. */
+        fun buildIfBlock(ifBlock: IfStatement) =
+            ASTIfBlockStatement(ifBlock).apply {
+                buildCondition(ifBlock.condition).also { it.setParent(this) }
+                wrapBody(ifBlock.thenStatement, parent = this).also { it.setParent(this) }
+            }
+
+        return ASTIfElseBlockStatement(node, elseBlock != null).apply {
+            ifBlocks.forEach { ifBlock -> buildIfBlock(ifBlock).also { it.setParent(this) } }
+            if (elseBlock != null) {
+                wrapBody(elseBlock, parent = this).also { it.setParent(this) }
+            }
+        }
+    }
+
+    /** Result of [flattenIfStatement]. */
+    private data class FlatIfStatement(val ifBlocks: List<IfStatement>, val elseBlock: Statement?)
+
+    /** Flattens an [IfStatement] into a list of [IfStatement]s. */
+    private fun flattenIfStatement(
+        node: Statement?,
+        ifBlocks: List<IfStatement> = emptyList()
+    ): FlatIfStatement =
+        when (node) {
+            is IfStatement ->
+                // Extract node and continue flattening
+                flattenIfStatement(node = node.elseStatement, ifBlocks = ifBlocks + node)
+            else ->
+                // Can't flatten
+                FlatIfStatement(ifBlocks, elseBlock = node)
+        }
 
     /** Builds an [ASTStandardCondition] wrapper for the [condition]. */
     private fun buildCondition(condition: Node?) =
