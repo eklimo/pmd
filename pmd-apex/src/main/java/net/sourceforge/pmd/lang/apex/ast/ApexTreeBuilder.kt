@@ -275,10 +275,11 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
             "this" -> ASTThisMethodCallExpression(node).apply { buildChildren(node, parent = this) }
             "super" -> ASTSuperMethodCallExpression(node).apply { buildChildren(node, parent = this) }
             else -> {
-                val (receiver, components, isSafe) = flattenExpression(node)
+                val (receiver, components, isSafe) = flattenExpression(node.receiver)
                 ASTMethodCallExpression(node, components).apply {
-                    buildReferenceExpression(components.dropLast(1), receiver, ReferenceType.METHOD, isSafe)
-                        .also { it.setParent(this) }
+                    buildReferenceExpression(components, receiver, ReferenceType.METHOD, isSafe).also {
+                        it.setParent(this)
+                    }
                     buildChildren(node, parent = this, exclude = { it == node.receiver })
                 }
             }
@@ -300,8 +301,7 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
 
     /**
      * Attempts to flatten an [Expression] tree containing variable references into a list of
-     * [Identifier]s. Applicable nodes are [FieldExpression], [CallExpression], and
-     * [VariableExpression].
+     * [Identifier]s. Applicable nodes are [FieldExpression] and [VariableExpression].
      */
     private fun flattenExpression(
         node: Expression?,
@@ -320,19 +320,6 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
                     // Extract node.field and continue flattening
                     flattenExpression(node = node.obj, components = listOf(node.field) + components)
                 }
-            is CallExpression -> {
-                if (node.isSafe) {
-                    // Don't flatten a safe call
-                    FlatExpression(
-                        remainder = node.receiver,
-                        components = listOf(node.id) + components,
-                        isSafe = true
-                    )
-                } else {
-                    // Extract node.id and continue flattening
-                    flattenExpression(node = node.receiver, components = listOf(node.id) + components)
-                }
-            }
             is VariableExpression ->
                 // Extract node.id and stop
                 FlatExpression(remainder = null, components = listOf(node.id) + components, isSafe = false)

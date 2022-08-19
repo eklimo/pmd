@@ -14,7 +14,10 @@ import com.google.summit.ast.expression.CallExpression;
 
 public class ASTMethodCallExpression extends AbstractApexNode.Single<CallExpression> {
 
-    /** The {@link Identifier}s that constitute the {@link #getFullMethodName() full method name}. */
+    /**
+     * The {@link Identifier}s that constitute the {@link CallExpression#getReceiver() receiver} of
+     * this method call.
+     */
     private final List<Identifier> components;
 
     @Deprecated
@@ -34,7 +37,7 @@ public class ASTMethodCallExpression extends AbstractApexNode.Single<CallExpress
     }
 
     public String getFullMethodName() {
-        return components.stream().map(Identifier::getString).collect(Collectors.joining("."));
+        return components.stream().map(id -> id.getString() + ".").collect(Collectors.joining()) + getMethodName();
     }
 
     public int getInputParametersSize() {
