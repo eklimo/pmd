@@ -6,14 +6,14 @@ package net.sourceforge.pmd.lang.apex.ast;
 
 import net.sourceforge.pmd.annotation.InternalApi;
 
-import com.google.summit.ast.declaration.TypeDeclaration;
+import com.google.summit.ast.declaration.EnumDeclaration;
 
-public class ASTUserEnum extends ApexRootNode<TypeDeclaration> {
+public class ASTUserEnum extends ApexRootNode<EnumDeclaration> {
 
     @Deprecated
     @InternalApi
-    public ASTUserEnum(TypeDeclaration userEnum) {
-        super(userEnum);
+    public ASTUserEnum(EnumDeclaration enumDeclaration) {
+        super(enumDeclaration);
     }
 
     @Override
@@ -23,10 +23,7 @@ public class ASTUserEnum extends ApexRootNode<TypeDeclaration> {
 
     @Override
     public String getImage() {
-//        String apexName = getDefiningType();
-//        return apexName.substring(apexName.lastIndexOf('.') + 1);
-        // TODO(b/239648780)
-        return "";
+        return node.getId().getString();
     }
 
     public ASTModifierNode getModifiers() {
