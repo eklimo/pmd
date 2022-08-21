@@ -350,7 +350,11 @@ class ApexTreeBuilder(val sourceCode: String, val parserOptions: ApexParserOptio
 
     /** Determines the [ReferenceType] of an [Expression]. */
     private fun referenceTypeOf(expr: Expression) =
-        if (expr.parent is AssignExpression) ReferenceType.STORE else ReferenceType.LOAD
+        if ((expr.parent as? AssignExpression)?.target == expr) {
+            ReferenceType.STORE
+        } else {
+            ReferenceType.LOAD
+        }
 
     /** Builds an [ASTTernaryExpression] wrapper for the [TernaryExpression]. */
     private fun buildTernaryExpression(node: TernaryExpression) =
