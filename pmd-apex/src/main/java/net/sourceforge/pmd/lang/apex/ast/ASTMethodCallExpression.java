@@ -18,13 +18,13 @@ public class ASTMethodCallExpression extends AbstractApexNode.Single<CallExpress
      * The {@link Identifier}s that constitute the {@link CallExpression#getReceiver() receiver} of
      * this method call.
      */
-    private final List<Identifier> components;
+    private final List<Identifier> receiverComponents;
 
     @Deprecated
     @InternalApi
-    public ASTMethodCallExpression(CallExpression callExpression, List<Identifier> components) {
+    public ASTMethodCallExpression(CallExpression callExpression, List<Identifier> receiverComponents) {
         super(callExpression);
-        this.components = components;
+        this.receiverComponents = receiverComponents;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ASTMethodCallExpression extends AbstractApexNode.Single<CallExpress
     }
 
     public String getFullMethodName() {
-        return components.stream().map(id -> id.getString() + ".").collect(Collectors.joining()) + getMethodName();
+        return receiverComponents.stream().map(id -> id.getString() + ".").collect(Collectors.joining()) + getMethodName();
     }
 
     public int getInputParametersSize() {
