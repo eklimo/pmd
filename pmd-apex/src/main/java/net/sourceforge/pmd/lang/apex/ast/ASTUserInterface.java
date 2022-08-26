@@ -4,11 +4,10 @@
 
 package net.sourceforge.pmd.lang.apex.ast;
 
-import java.util.stream.Collectors;
-
 import net.sourceforge.pmd.Rule;
 import net.sourceforge.pmd.annotation.InternalApi;
 
+import com.google.summit.ast.TypeRef;
 import com.google.summit.ast.declaration.InterfaceDeclaration;
 
 public class ASTUserInterface extends ApexRootNode<InterfaceDeclaration> implements ASTUserClassOrInterface<InterfaceDeclaration>,
@@ -70,12 +69,6 @@ public class ASTUserInterface extends ApexRootNode<InterfaceDeclaration> impleme
     }
 
     public String getSuperInterfaceName() {
-        /*
-        return node.getDefiningType().getCodeUnitDetails().getInterfaceTypeRefs().stream().map(TypeRef::getNames)
-                .map(it -> it.stream().map(Identifier::getValue).collect(Collectors.joining(".")))
-                .findFirst().orElse("");
-         */
-        // TODO(b/239648780)
-        return null;
+        return node.getExtendsTypes().stream().map(TypeRef::asCodeString).findFirst().orElse("");
     }
 }
