@@ -53,8 +53,13 @@ public class ASTMethod extends AbstractApexNode.Single<MethodDeclaration> implem
 
     @Override
     public String getImage() {
+        if (node.isConstructor()) {
+            ApexRootNode<?> rootNode = getFirstParentOfType(ApexRootNode.class);
+            if (rootNode != null) {
+                return rootNode.node.getId().getString();
+            }
+        }
         return getName();
-        // TODO(b/239648780): differs from #getCanonicalName in some instances
     }
 
     public String getCanonicalName() {

@@ -10,13 +10,13 @@ import org.antlr.runtime.Token;
 
 import net.sourceforge.pmd.annotation.InternalApi;
 
+// TODO(b/243905823)
 public class ASTFormalComment extends AbstractApexNode.Single<Node> {
 
     private final String image;
 
     ASTFormalComment(Token token) {
         // super(new AstComment(token));
-        // TODO(b/239648780)
         super(null);
         this.image = token.getText();
     }
@@ -24,7 +24,6 @@ public class ASTFormalComment extends AbstractApexNode.Single<Node> {
     @Deprecated
     public ASTFormalComment(String token) {
         // super(new AstComment(null));
-        // TODO(b/239648780)
         super(null);
         image = token;
     }
@@ -82,5 +81,4 @@ public class ASTFormalComment extends AbstractApexNode.Single<Node> {
         }
     }
      */
-    // TODO(b/239648780)
 }
