@@ -7,6 +7,7 @@ package net.sourceforge.pmd.lang.apex.ast;
 import com.google.summit.ast.Node;
 import net.sourceforge.pmd.annotation.InternalApi;
 
+// TODO(b/243906255)
 public class ASTSoqlExpression extends AbstractApexNode.Single<Node> {
 
     @Deprecated
@@ -22,13 +23,11 @@ public class ASTSoqlExpression extends AbstractApexNode.Single<Node> {
 
     public String getQuery() {
         // return node.getRawQuery();
-        // TODO(b/239648780)
         return null;
     }
 
     public String getCanonicalQuery() {
         // return node.getCanonicalQuery();
-        // TODO(b/239648780)
         return null;
     }
 }
